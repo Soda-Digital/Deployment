@@ -5,18 +5,25 @@ permissions:
   contents: write
 
 
-inputs:
-  containertag:
-    description: 'GitHub Container Tag'
-    required: true
-    type: number
-  environment:
-    type: environment
-    required: true
-
 on:
   workflow_call:
+    inputs:
+      containertag:
+        description: 'GitHub Container Tag'
+        required: true
+        type: number
+      environment:
+        type: string
+        required: true
   workflow_dispatch:
+    inputs:
+      containertag:
+        description: 'GitHub Container Tag'
+        required: true
+        type: string
+      environment:
+        type: environment
+        required: true
 
 
 concurrency: ${{ inputs.environment }}
