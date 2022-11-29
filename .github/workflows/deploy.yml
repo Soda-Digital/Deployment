@@ -9,7 +9,6 @@ on:
   workflow_call:
     inputs:
       containertag:
-        description: 'GitHub Container Tag'
         required: true
         type: string
       environment:
@@ -22,6 +21,7 @@ on:
         required: true
         type: string
       environment:
+        description: 'Deployment Environment'
         type: environment
         required: true
 
