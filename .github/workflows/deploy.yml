@@ -4,7 +4,6 @@ permissions:
   id-token: write
   contents: write
 
-
 on:
   workflow_call:
     inputs:
@@ -14,20 +13,8 @@ on:
       environment:
         type: string
         required: true
-  workflow_dispatch:
-    inputs:
-      containertag:
-        description: 'GitHub Container Tag'
-        required: true
-        type: string
-      environment:
-        description: 'Deployment Environment'
-        type: environment
-        required: true
-
 
 concurrency: ${{ inputs.environment }}
-
     
 jobs:
   deployment:
