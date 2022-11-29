@@ -11,7 +11,7 @@ on:
       containertag:
         description: 'GitHub Container Tag'
         required: true
-        type: number
+        type: string
       environment:
         type: string
         required: true
