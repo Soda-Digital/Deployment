@@ -40,14 +40,12 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID}}
           tenant-id: ${{ secrets.AZURE_TENANTID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}   
-      - name: ACR Login
-        run: az acr login --name ${{ secrets.AZURE_CONTAINER_REGISTRY }}          
       - uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ env.AZURE_APP_NAME }}
+          app-name: ${{ secrets.AZURE_APP_NAME }}
           images: '${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ secrets.AZURE_CONTAINER_IMAGE_NAME }}:${{ inputs.containertag }}'
       - name: Create GitHub Release
         if: ${{inputs.environment == 'Production' }}
-        run: "gh release create ${{ inputs.containertag }} --generate-notes"
+        run: "gh release create ${{ github.event.inputs.releaseTag }} --generate-notes"
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
