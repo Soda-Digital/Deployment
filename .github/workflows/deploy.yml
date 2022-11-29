@@ -46,7 +46,7 @@ jobs:
           app-name: ${{ secrets.AZURE_APP_NAME }}
           images: '${{ secrets.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ secrets.AZURE_CONTAINER_IMAGE_NAME }}:${{ inputs.containertag }}'
       - name: Create GitHub Release
-        if: ${{inputs.environment == 'Production' }}
+        #if: ${{inputs.environment == 'Production' }}
         run: "gh release create ${{ github.event.inputs.releaseTag }} --generate-notes"
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
