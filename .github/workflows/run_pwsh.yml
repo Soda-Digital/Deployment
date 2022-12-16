@@ -1,0 +1,14 @@
+name: Deploy Azure Resources
+on: workflow_dispatch 
+    
+jobs:
+
+  build:
+    name: Run Script
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo        
+        uses: actions/checkout@v2
+      - run: |
+          ./Create-NewAzureEnvironment.ps1
+        shell: pwsh 
