@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     
-    - name: Run Azure PowerShell script
+    - name: Create Security Group and Service Principal
       uses: azure/powershell@v1
       with:
         gname: ${{ secrets.AZ_GROUP_NAME }}
@@ -25,9 +25,41 @@ jobs:
         tenantid: ${{ secrets.AZURE_TENANT_ID }}
         
         inlineScript: |
+         $ADgroupId = (Get-AzADGroup -DisplayName "$gname").Id
+         $SPObjId = (Get-AzADServicePrincipal -ServicePrincipalName "$spname").Id
+         $members = @()
+         $members += (Get-AzADServicePrincipal -ObjectId $SPObjId).Id
+         
          Connect-AZAccount -tenantid "$tenantid" 
-         ./Create-NewAzureEnvironment.ps1
+         
+         New-AzADGroup -DisplayName "$gname" -SecurityEnabled
+         
+         New-AzADServicePrincipal -DisplayName  "$spname"
+         
+         Add-AzADGroupMember -TargetGroupObjectId $ADgroupId -MemberObjectId $members
+   
         azPSVersion: "latest"
-        
-        
+    
+  Create-Federated-Credentials :
+   if: inputs.environment == 'Dev' 
+   runs-on: ubuntu-latest
+   steps:
+   - name: Dev Environment Credentials
+     uses: Azure/powershell@v1
+     with:
+        gname: ${{ secrets.AZ_GROUP_NAME }}
+        spname: ${{ secrets.AZ_SP_NAME }}
+        audience: ${{ secrets.AZ_FC_AUDIENCE }}
+        issuer: ${{ secrets.AZ_FC_ISSUER }}
+        name: ${{ secrets.AZ_FC_NAME }}
+        subject:  ${{ secrets.AZ_FC_SUBJECT }}
+        tenantid: ${{ secrets.AZURE_TENANT_ID }}
+
+       
+
+      azPSVersion: "latest"
+
+ 
+
+       
 
