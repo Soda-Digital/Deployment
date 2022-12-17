@@ -12,11 +12,6 @@ jobs:
   build :
     runs-on: ubuntu-latest
     steps:
-    - name: Login via Az module
-      uses: azure/login@v1
-      with:
-        tenant-id: ${{ secrets.AZURE_TENANTID }}
-        enable-AzPSSession: true 
     
     - name: Run Azure PowerShell script
       uses: azure/powershell@v1
@@ -27,9 +22,11 @@ jobs:
         issuer: ${{ secrets.AZ_FC_ISSUER }}
         name: ${{ secrets.AZ_FC_NAME }}
         subject:  ${{ secrets.AZ_FC_SUBJECT }}
+        tenantid: ${{ secrets.AZURE_TENANT_ID }}
         
         inlineScript: |
-            ./Create-NewAzureEnvironment.ps1
+         Connect-AZAccount -tenantid "$tenantid" 
+         ./Create-NewAzureEnvironment.ps1
         azPSVersion: "latest"
         
         
