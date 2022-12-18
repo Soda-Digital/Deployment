@@ -2,10 +2,6 @@ name: Deploy Azure Resources
 
 on: 
  workflow_call:
-  inputs:
-   environment:
-    type: string
-    required: true
             
 jobs:
 
@@ -40,24 +36,7 @@ jobs:
    
         azPSVersion: "latest"
     
-  Create-Federated-Credentials :
-   if: inputs.environment == 'Dev' 
-   runs-on: ubuntu-latest
-   steps:
-   - name: Dev Environment Credentials
-     uses: Azure/powershell@v1
-     with:
-        gname: ${{ secrets.AZ_GROUP_NAME }}
-        spname: ${{ secrets.AZ_SP_NAME }}
-        audience: ${{ secrets.AZ_FC_AUDIENCE }}
-        issuer: ${{ secrets.AZ_FC_ISSUER }}
-        name: ${{ secrets.AZ_FC_NAME }}
-        subject:  ${{ secrets.AZ_FC_SUBJECT }}
-        tenantid: ${{ secrets.AZURE_TENANT_ID }}
 
-       
-
-      azPSVersion: "latest"
 
  
 
