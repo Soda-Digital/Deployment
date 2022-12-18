@@ -14,10 +14,6 @@ jobs:
       with:
         gname: ${{ secrets.AZ_GROUP_NAME }}
         spname: ${{ secrets.AZ_SP_NAME }}
-        audience: ${{ secrets.AZ_FC_AUDIENCE }}
-        issuer: ${{ secrets.AZ_FC_ISSUER }}
-        name: ${{ secrets.AZ_FC_NAME }}
-        subject:  ${{ secrets.AZ_FC_SUBJECT }}
         tenantid: ${{ secrets.AZURE_TENANT_ID }}
         
         inlineScript: |
