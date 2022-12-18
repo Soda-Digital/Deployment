@@ -17,16 +17,16 @@ jobs:
         tenantid: ${{ secrets.AZURE_TENANT_ID }}
         
         inlineScript: |
-         $ADgroupId = (Get-AzADGroup -DisplayName "$gname").Id
-         $SPObjId = (Get-AzADServicePrincipal -ServicePrincipalName "$spname").Id
-         $members = @()
-         $members += (Get-AzADServicePrincipal -ObjectId $SPObjId).Id
-         
          Connect-AZAccount -tenantid "$tenantid" 
          
          New-AzADGroup -DisplayName "$gname" -SecurityEnabled
          
          New-AzADServicePrincipal -DisplayName  "$spname"
+         
+         $ADgroupId = (Get-AzADGroup -DisplayName "$gname").Id
+         $SPObjId = (Get-AzADServicePrincipal -ServicePrincipalName "$spname").Id
+         $members = @()
+         $members += (Get-AzADServicePrincipal -ObjectId $SPObjId).Id
          
          Add-AzADGroupMember -TargetGroupObjectId $ADgroupId -MemberObjectId $members
    
