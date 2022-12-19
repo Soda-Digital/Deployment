@@ -25,9 +25,21 @@ jobs:
       uses: azure/powershell@v1
       with:
         inlineScript: |
+        
+         param($GroupDisplayName, $TenantID, $SPDisplayName)
+         Connect-AzAccount -tenantid "${{ env.tenantid }}"
 
-         ./Create-ADSGroup.ps1 -GroupDisplayName "${{ env.gname }}" -TenantID "${{ env.tenandid }}" -SPDisplayName "${{ env.spname }}"
-   
+         New-AZADGroup -DisplayName "${{ env.gname }}" -SecurityEnabled
+
+         New-AZADServicePrincipal -DisplayName "${{ env.spname }}"
+
+         $SPOjbID = (Get-AZADServicePrincipal -ServicePrincipalName "${{ env.spname }}".Id
+         $members += @()                            #can add other members
+         $members += (Get-AZADServicePrincipal -ObjectId $SPObjID).Id
+         $ADgroupId = (Get-AzADGroup -DisplayName "GroupDisplayName").Id
+
+         Add-AZADGroupMember -TargetGroupObjectId $ADgroupId -MemberObjectId $members
+
         azPSVersion: "latest"
       env:
         gname: ${{ secrets.AZ_GROUP_NAME }}
