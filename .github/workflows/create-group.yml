@@ -11,24 +11,25 @@ jobs:
     
     - name: Create Security Group and Service Principal
       uses: azure/powershell@v1
-      with:
+      env:
         gname: ${{ secrets.AZ_GROUP_NAME }}
         spname: ${{ secrets.AZ_SP_NAME }}
         tenantid: ${{ secrets.AZURE_TENANT_ID }}
         
         inlineScript: |
-         Connect-AZAccount -tenantid "$tenantid" 
+        
+         Connect-AZAccount -tenantid "$env:tenantid" 
          
-         New-AzADGroup -DisplayName "$gname" -SecurityEnabled
+         New-AzADGroup -DisplayName "$env:gname" -SecurityEnabled
          
-         New-AzADServicePrincipal -DisplayName  "$spname"
+         New-AzADServicePrincipal -DisplayName  "$env:spname"
          
-         $ADgroupId = (Get-AzADGroup -DisplayName "$gname").Id
-         $SPObjId = (Get-AzADServicePrincipal -ServicePrincipalName "$spname").Id
+         $ADgroupId = (Get-AzADGroup -DisplayName "$env:gname").Id
+         $SPObjId = (Get-AzADServicePrincipal -ServicePrincipalName "$env:spname").Id
          $members = @()
-         $members += (Get-AzADServicePrincipal -ObjectId $SPObjId).Id
+         $members += (Get-AzADServicePrincipal -ObjectId "$env:SPObjId").Id
          
-         Add-AzADGroupMember -TargetGroupObjectId $ADgroupId -MemberObjectId $members
+         Add-AzADGroupMember -TargetGroupObjectId "$env:ADgroupId" -MemberObjectId "$env:members"
    
         azPSVersion: "latest"
     
