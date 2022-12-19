@@ -2,12 +2,16 @@ name: Deploy Azure Resources
 
 on: 
  workflow_call:
- 
+
+permissions:
+  id-token: write
+  contents: write
+  
 env:
 
  gname: ${{ secrets.AZ_GROUP_NAME }}
  spname: ${{ secrets.AZ_SP_NAME }}
- TENANT_ID: ${{ secrets.AZURE_TENANTID }}  
+
  
 jobs:
 
@@ -26,7 +30,7 @@ jobs:
          enable-AzPSSession: true 
      
     - run: |
-         Connect-AzAccount -tenantid "${{ env.TENANT_ID }}"
+         Connect-AzAccount -tenantid "${{ secrets.AZURE_TENANTID }}"
          New-AZADGroup -DisplayName "${{ env.gname }}" -SecurityEnabled
          New-AZADServicePrincipal -DisplayName "${{ env.spname }}"
          $SPOjbID = (Get-AZADServicePrincipal -ServicePrincipalName "${{ env.spname }}").Id
