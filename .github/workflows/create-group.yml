@@ -28,8 +28,7 @@ jobs:
          allow-no-subscriptions: true
          enable-AzPSSession: true 
      
-    - run: |
-         Connect-AzAccount -tenantid "${{ secrets.AZURE_TENANTID }}"
+    - run: Connect-AzAccount -ServicePrincipal -Tenant ${{ secrets.AZURE_TENANTID }}
     - name: Create New AZ Security Group     
       run: New-AZADGroup -DisplayName "${{ env.gname }}" -SecurityEnabled
     - name: Create new Service Principal     
