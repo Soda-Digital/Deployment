@@ -27,20 +27,23 @@ jobs:
          tenant-id: ${{ secrets.AZURE_TENANTID }}
          allow-no-subscriptions: true
          enable-AzPSSession: true 
-     
-    - name: Create New AZ Security Group     
-      run: New-AZADGroup -DisplayName "${{ env.gname }}" -SecurityEnabled
-    - name: Create new Service Principal     
-      run: New-AZADServicePrincipal -DisplayName "${{ env.spname }}"
-    - name: Add Service Principal to Security Group
-      run : |
-         Connect-AZAccount -tenantid ${{ secrets.AZURE_TENANTID }}
-         $SPOjbID = (Get-AZADServicePrincipal -ServicePrincipalName "${{ env.spname }}").Id
-         $members += @()                            #can add other members
-         $members += (Get-AZADServicePrincipal -ObjectId $SPObjID).Id
-         $ADgroupId = (Get-AzADGroup -DisplayName "GroupDisplayName").Id
-         Add-AZADGroupMember -TargetGroupObjectId $ADgroupId -MemberObjectId $members
-       
+         
+    - name : Setup Azure Powershell
+      uses: azure/powershell@v1
+      with:
+        inlineScript: |
+      
+          Write-Host "Create New AZ Security Group"     
+          New-AZADGroup -DisplayName "${{ env.gname }}" -SecurityEnabled
+          Write-Host "Create new Service Principal    " 
+          New-AZADServicePrincipal -DisplayName "${{ env.spname }}"
+          Write-Host "Add Service Principal to Security Group"
+          $SPOjbID = (Get-AZADServicePrincipal -ServicePrincipalName "${{ env.spname }}").Id
+          $members += @()                            #can add other members
+          $members += (Get-AZADServicePrincipal -ObjectId $SPObjID).Id
+          $ADgroupId = (Get-AzADGroup -DisplayName "GroupDisplayName").Id
+          Add-AZADGroupMember -TargetGroupObjectId $ADgroupId -MemberObjectId $members
+
       
 
     
