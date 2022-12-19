@@ -1,4 +1,5 @@
 param($GroupDisplayName, $TenantID, $SPDisplayName)
+Connect-AzAccount -tenantid $TenantID
 
 New-AZADGroup -DisplayName $GroupDisplayName -SecurityEnabled
 
