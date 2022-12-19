@@ -26,7 +26,6 @@ jobs:
       with:
         inlineScript: |
         
-         param($GroupDisplayName, $TenantID, $SPDisplayName)
          Connect-AzAccount -tenantid "${{ env.tenantid }}"
 
          New-AZADGroup -DisplayName "${{ env.gname }}" -SecurityEnabled
