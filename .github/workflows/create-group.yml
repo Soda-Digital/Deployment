@@ -2,11 +2,6 @@ name: Deploy Azure Resources
 
 on: 
  workflow_call:
-
-env:
-  gname: ${{ secrets.AZ_GROUP_NAME }}
-  spname: ${{ secrets.AZ_SP_NAME }}
-  tenantid: ${{ secrets.AZURE_TENANT_ID }}
  
   
 jobs:
@@ -34,6 +29,10 @@ jobs:
          ./Create-ADSGroup.ps1 -GroupDisplayName ${{ env.gname }} -TenantID ${{ env.tenandid }} -SPDisplayName ${{ env.spname }}
    
         azPSVersion: "latest"
+      env:
+        gname: ${{ secrets.AZ_GROUP_NAME }}
+        spname: ${{ secrets.AZ_SP_NAME }}
+        tenantid: ${{ secrets.AZURE_TENANT_ID }}
     
 
 
