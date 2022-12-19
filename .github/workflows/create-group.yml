@@ -26,7 +26,7 @@ jobs:
       with:
         inlineScript: |
 
-         ./Create-ADSGroup.ps1 -GroupDisplayName ${{ env.gname }} -TenantID ${{ env.tenandid }} -SPDisplayName ${{ env.spname }}
+         ./Create-ADSGroup.ps1 -GroupDisplayName "${{ env.gname }}" -TenantID "${{ env.tenandid }}" -SPDisplayName "${{ env.spname }}"
    
         azPSVersion: "latest"
       env:
