@@ -26,7 +26,7 @@ jobs:
          enable-AzPSSession: true 
      
     - run: |
-         Connect-AzAccount -tenantid "${{ env.tenantid }}"
+         Connect-AzAccount -tenantid "${{ env.TENANT_ID }}"
          New-AZADGroup -DisplayName "${{ env.gname }}" -SecurityEnabled
          New-AZADServicePrincipal -DisplayName "${{ env.spname }}"
          $SPOjbID = (Get-AZADServicePrincipal -ServicePrincipalName "${{ env.spname }}").Id
