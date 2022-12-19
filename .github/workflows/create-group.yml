@@ -1,17 +1,16 @@
 name: Deploy Azure Resources
 
-on: 
- workflow_call:
-
 permissions:
   id-token: write
   contents: write
-  
+    
 env:
 
  gname: ${{ secrets.AZ_GROUP_NAME }}
  spname: ${{ secrets.AZ_SP_NAME }}
-
+ 
+on: 
+ workflow_call:
  
 jobs:
 
@@ -31,8 +30,13 @@ jobs:
      
     - run: |
          Connect-AzAccount -tenantid "${{ secrets.AZURE_TENANTID }}"
-         New-AZADGroup -DisplayName "${{ env.gname }}" -SecurityEnabled
-         New-AZADServicePrincipal -DisplayName "${{ env.spname }}"
+    - name: Create New AZ Security Group     
+      run: New-AZADGroup -DisplayName "${{ env.gname }}" -SecurityEnabled
+    - name: Create new Service Principal     
+      run: New-AZADServicePrincipal -DisplayName "${{ env.spname }}"
+    - name: Add Service Principal to Security Group
+      run : |
+         Connect-AZAccount -tenantid ${{ secrets.AZURE_TENANTID }}
          $SPOjbID = (Get-AZADServicePrincipal -ServicePrincipalName "${{ env.spname }}").Id
          $members += @()                            #can add other members
          $members += (Get-AZADServicePrincipal -ObjectId $SPObjID).Id
@@ -40,15 +44,6 @@ jobs:
          Add-AZADGroupMember -TargetGroupObjectId $ADgroupId -MemberObjectId $members
        
       
-    
-    - name: Create Security Group and Service Principal
-      uses: azure/powershell@v1
-      with:
-        inlineScript: |
-        
-
-
-        azPSVersion: "latest"
 
     
 
