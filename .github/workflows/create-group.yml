@@ -33,7 +33,7 @@ jobs:
 
          New-AZADServicePrincipal -DisplayName "${{ env.spname }}"
 
-         $SPOjbID = (Get-AZADServicePrincipal -ServicePrincipalName "${{ env.spname }}".Id
+         $SPOjbID = (Get-AZADServicePrincipal -ServicePrincipalName "${{ env.spname }}").Id
          $members += @()                            #can add other members
          $members += (Get-AZADServicePrincipal -ObjectId $SPObjID).Id
          $ADgroupId = (Get-AzADGroup -DisplayName "GroupDisplayName").Id
