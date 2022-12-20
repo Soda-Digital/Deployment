@@ -42,6 +42,8 @@ jobs:
           $members += (Get-AZADServicePrincipal -ObjectId $SPObjID).Id
           $ADgroupId = (Get-AzADGroup -DisplayName "GroupDisplayName").Id
           Add-AZADGroupMember -TargetGroupObjectId $ADgroupId -MemberObjectId $members
+          
+        azPsVersion: "latest"
 
       
 
