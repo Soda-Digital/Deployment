@@ -23,10 +23,12 @@ jobs:
     - name: Login via Az Module
       uses: azure/login@v1
       with:
-         client-id: ${{ secrets.AZURE_CLIENT_ID }}
-         tenant-id: ${{ secrets.AZURE_TENANTID }}
-         allow-no-subscriptions: true
-         enable-AzPSSession: true 
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+        allow-no-subscriptions: true
+        enable-AzPSSession: true 
+    
+    - name: Test
+      run: Write-Host "Successful Login"
          
     - name : Setup Azure Powershell
       uses: azure/powershell@v1
