@@ -33,7 +33,7 @@ jobs:
         inlineScript: |
       
           Write-Host "Create New AZ Security Group"     
-          New-AZADGroup -DisplayName "${{ env.gname }}" -SecurityEnabled
+          New-AZADGroup -DisplayName "${{ env.gname }}" -SecurityEnabled -MailNickName "NotSet"
           Write-Host "Create new Service Principal    " 
           New-AZADServicePrincipal -DisplayName "${{ env.spname }}"
           Write-Host "Add Service Principal to Security Group"
