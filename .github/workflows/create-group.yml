@@ -26,9 +26,6 @@ jobs:
         creds: ${{secrets.AZURE_CREDENTIALS}}
         allow-no-subscriptions: true
         enable-AzPSSession: true 
-    
-    - name: Test
-      run: Write-Host "Successful Login"
          
     - name : Setup Azure Powershell
       uses: azure/powershell@v1
