@@ -1,13 +1,24 @@
-param($GroupDisplayName, $TenantID, $SPDisplayName)
-Connect-AzAccount -tenantid $TenantID
+$sgname = "<client name> (Azure Contributor)" #client name
+$spname = "<client name> (Service Operations)"
 
-New-AZADGroup -DisplayName "$GroupDisplayName" -SecurityEnabled
+ 
+Write-Host "Logging in to Azure AD"
 
-New-AZADServicePrincipal -DisplayName "$SPDisplayName"
+Connect-AzAccount    #currently manual prompt, automated login still WIP
 
-$SPOjbID = (Get-AZADServicePrincipal -ServicePrincipalName "$SPDisplayName".Id
+Write-Host "Create New AZ Security Group"  
+
+New-AZADGroup -DisplayName $sgname -SecurityEnabled -MailNickName "NotSet"
+
+Write-Host "Create new Service Principal"
+
+New-AZADServicePrincipal -DisplayName $spname
+
+Write-Host "Add Service Principal to Security Group"
+
+$SPOjbID = (Get-AzADApplication -DisplayName $spname | Get-AzADServicePrincipal).Id
 $members += @()                            #can add other members
-$members += (Get-AZADServicePrincipal -ObjectId $SPObjID).Id
-$ADgroupId = (Get-AzADGroup -DisplayName "GroupDisplayName").Id
+$members += (Get-AZADServicePrincipal -ObjectId $SPOjbID).Id
+$ADgroupId = (Get-AzADGroup -DisplayName $sgname).Id
 
 Add-AZADGroupMember -TargetGroupObjectId $ADgroupId -MemberObjectId $members
