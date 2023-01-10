@@ -1,0 +1,46 @@
+name: Deploy Azure Resources
+
+permissions:
+  id-token: write
+  contents: write
+    
+env:
+
+ gname: ${{ secrets.AZ_GROUP_NAME }}
+ spname: ${{ secrets.AZ_SP_NAME }}
+ 
+on: 
+ workflow_call:
+ 
+jobs:
+
+  build :
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v2.6.0
+      
+    - name: Login via Az Module
+      uses: azure/login@v1.4.6
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+        allow-no-subscriptions: true
+        enable-AzPSSession: true 
+         
+    - name : Setup Azure Powershell
+      uses: azure/powershell@v1
+      with:
+        inlineScript: |
+          .\Create-ADGroup.ps1
+          
+        azPsVersion: "latest"
+
+      
+
+    
+
+
+ 
+
+       
+
